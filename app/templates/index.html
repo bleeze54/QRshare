@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>QR Share</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+</head>
+<body>
+<h1>Scanner et Partager</h1>
+<input type="text" id="pseudo" placeholder="Votre pseudo (optionnel)">
+<video id="video" autoplay playsinline></video>
+<canvas id="canvas" hidden></canvas>
+<div id="result"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script>
+const ws = new WebSocket("wss://192.168.1.30:8443/ws/qr/");                                       //IP LOCALE A CHANGER
+ws.onopen = () => console.log("✅ WebSocket connecté");
+ws.onmessage = (event) => console.log("📩 Réponse serveur:", event.data);
+
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const resultDiv = document.getElementById("result");
+
+navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+  .then((stream) => {
+      video.srcObject = stream;
+      video.setAttribute("playsinline", true);
+      scanLoop();
+  })
+  .catch((err) => console.error("Erreur caméra:", err));
+
+function scanLoop() {
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+        if (code) {
+            resultDiv.innerText = "QR trouvé: " + code.data;
+            const pseudo = document.getElementById("pseudo").value || "user123";
+
+            // Envoi au serveur
+            ws.send(JSON.stringify({ pseudo: pseudo, qr_code: code.data }));
+        }
+    }
+    requestAnimationFrame(scanLoop);
+}
+</script>
+</body>
+</html>
