@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
+    'background_task',
     'app',
 ]
 
@@ -51,3 +52,5 @@ CHANNEL_LAYERS = {
 
 STATIC_URL = 'static/'
 SECURE_SSL_REDIRECT = False
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

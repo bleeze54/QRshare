@@ -10,9 +10,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
     'channels',
     'app',
+    
 ]
 
 MIDDLEWARE = [
@@ -28,7 +30,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'qrshare.urls'
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [],
+    'DIRS': ['app/templates',
+             'templates'],
     'APP_DIRS': True,
     'OPTIONS': {'context_processors': [
         'django.template.context_processors.debug',
@@ -51,3 +54,5 @@ CHANNEL_LAYERS = {
 
 STATIC_URL = 'static/'
 SECURE_SSL_REDIRECT = False
+import os
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

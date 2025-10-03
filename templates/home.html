@@ -1,0 +1,12 @@
+{% extends "header.html" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="mb-4">Bienvenue sur l'application QRCode</h1>
+    <p>Choisissez une action :</p>
+    <a href="{% url 'scan' %}" class="btn btn-primary m-2">📷 Scanner un QR Code</a>
+    <a href="{% url 'qrcode_list' %}" class="btn btn-secondary m-2">📋 Voir les QR Codes</a>
+</div>
+{% endblock %}
