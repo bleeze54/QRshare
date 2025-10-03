@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Codes synchronisés</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    #qrcodes-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .qrcode-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 250px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .qrcode-card:hover {
+      transform: scale(1.05);
+    }
+    .creator {
+      font-weight: bold;
+      color: #333;
+    }
+    .timestamp {
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📡 QR Codes synchronisés</h1>
+  <div id="qrcodes-container"></div>
+
+  <script>
+    async function fetchQRCodes() {
+      try {
+        const response = await fetch("/qrcodes/json");
+        const data = await response.json();
+
+        const container = document.getElementById("qrcodes-container");
+        container.innerHTML = "";
+
+        data.forEach(qr => {
+          const card = document.createElement("div");
+          card.className = "qrcode-card";
+          card.innerHTML = `
+            <div class="creator">👤 ${qr.creator}</div>
+            <div class="data">📄 ${qr.data}</div>
+            <img src="{qr.qr_image_url}" alt="QR Code" style="margin-top:10px; width:100px; height:100px;">
+            <div class="timestamp">⏱️ ${new Date(qr.timestamp * 1000).toLocaleString()}</div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Erreur fetch:", err);
+      }
+    }
+
+    // Sync toutes les 1s
+    setInterval(fetchQRCodes, 1000);
+    fetchQRCodes();
+  </script>
+</body>
+</html>

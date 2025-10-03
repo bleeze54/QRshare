@@ -17,7 +17,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
-const ws = new WebSocket("wss://192.168.1.30:8443/ws/qr/");                                       //IP LOCALE A CHANGER
+const ws = new WebSocket("wss://192.168.1.30:8443/ws/qr/"); // IP locale à changer
 ws.onopen = () => console.log("✅ WebSocket connecté");
 ws.onmessage = (event) => console.log("📩 Réponse serveur:", event.data);
 
@@ -26,14 +26,25 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const resultDiv = document.getElementById("result");
 
-navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-  .then((stream) => {
-      video.srcObject = stream;
-      video.setAttribute("playsinline", true);
-      scanLoop();
-  })
-  .catch((err) => console.error("Erreur caméra:", err));
+let stream; // garder une référence au flux vidéo
 
+navigator.mediaDevices.getUserMedia({
+    video: {
+        facingMode: "environment",
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+    }
+})
+.then((s) => {
+    stream = s;
+    video.srcObject = stream;
+    video.setAttribute("playsinline", true);
+    video.play();
+    scanLoop();
+})
+.catch((err) => console.error("Erreur caméra:", err));
+
+// 🔍 Fonction de scan
 function scanLoop() {
     if (video.readyState === video.HAVE_ENOUGH_DATA) {
         canvas.width = video.videoWidth;
@@ -53,6 +64,22 @@ function scanLoop() {
     }
     requestAnimationFrame(scanLoop);
 }
+
+// 📸 Quand on clique sur la vidéo, on tente de relancer l’autofocus
+video.addEventListener("click", () => {
+    if (!stream) return;
+    const track = stream.getVideoTracks()[0];
+    if (track) {
+        track.applyConstraints({
+            advanced: [{ focusMode: "continuous" }]
+        }).then(() => {
+            console.log("🔄 Autofocus relancé");
+        }).catch(err => {
+            console.warn("⚠️ Contrainte non supportée:", err);
+        });
+    }
+});
 </script>
+
 </body>
 </html>
