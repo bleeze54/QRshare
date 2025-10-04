@@ -11,6 +11,7 @@ class QRcode(models.Model):
     creator = models.CharField(max_length=50)
     qr = models.ImageField(upload_to='qr_codes/')
     data= models.TextField(blank=False, null=False)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
     
 
     def __str__(self):

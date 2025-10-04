@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-import threading, time, datetime
+import threading, datetime, time
 from django.utils import timezone
 
 class AppConfig(AppConfig):
@@ -8,6 +8,7 @@ class AppConfig(AppConfig):
 
     def ready(self):
         from app.models import QRcode
+        import app.signals  # ⬅️ importer les signaux
 
         # Thread de nettoyage des QR codes expirés
         def cleaner():
