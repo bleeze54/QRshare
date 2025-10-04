@@ -1,1 +1,6 @@
 certs/
+run_ssl.sh
+db.sqlite3
+*.pyc
+__pycache__/
+qrshare/settings.py.bak
