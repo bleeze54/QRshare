@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends "header.html" %}
+
+{% block title %}liste des qrcodes{% endblock %}
+
+{% block content %}
 <head>
-  <meta charset="UTF-8">
-  <title>QR Codes synchronisés</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -76,4 +77,4 @@
     fetchQRCodes();
   </script>
 </body>
-</html>
+{% endblock %}

@@ -1,5 +1,8 @@
-<!DOCTYPE html>
-<html>
+{% extends "header.html" %}
+
+{% block title %}Scan ton qrcode{% endblock %}
+
+{% block content %}
 <head>
   <meta charset="UTF-8">
   <title>QR Share</title>
@@ -81,5 +84,4 @@ video.addEventListener("click", () => {
 });
 </script>
 
-</body>
-</html>
+{% endblock %}
