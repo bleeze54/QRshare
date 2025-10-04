@@ -8,11 +8,8 @@
 
 | Fonctionnalité               | Description                                                                 |
 |------------------------------|-----------------------------------------------------------------------------|
-| **Génération de QR codes**   | Crée des QR codes à partir de textes, URLs ou autres données.              |
-| **Partage facile**           | Exporte les QR codes en images (PNG, SVG) ou partage-les via un lien.      |
-| **Scan de QR codes**         | Utilise la caméra de ton appareil pour lire des QR codes en temps réel.    |
-| **Historique**               | Conserve un historique des QR codes générés/scannés pour un accès rapide.  |
-| **Personnalisation**         | Ajoute des couleurs, logos ou ajustes la taille des QR codes.              |
+| **Scan de QR codes**         | Utilise la caméra de ton appareil pour partager des QR codes en temps réel.    |
+| **Personnalisation**         | Partage les avec le monde entier     |
 
 ---
 
