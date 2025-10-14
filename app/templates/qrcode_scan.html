@@ -20,7 +20,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
-const ws = new WebSocket("wss://192.168.1.30:8443/ws/qr/"); // IP locale à changer
+const ws = new WebSocket("wss://https://qrshare.estebanfourage.fr/ws/qr/"); // IP ou nom de domaine utilisé
 ws.onopen = () => console.log("✅ WebSocket connecté");
 ws.onmessage = (event) => console.log("📩 Réponse serveur:", event.data);
 
